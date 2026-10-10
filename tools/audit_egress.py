@@ -263,11 +263,20 @@ def check_exfil_shapes(base):
     }
 
 
-# ============================================================ G3 跨服务器组合链
+# ============================================== G3s 跨服务器组合链（**静态**版）
+#
+# ⚠ 命名修正（Day 13）：原 ID 就叫 "G3"，与 check_service_principal.py 的
+#   G3「硬编码平台级/共享密钥」**完全撞号** —— 两个不同的检查共用一个 ID，
+#   合并台账里 G3 会变成歧义项（我自己的统计脚本就已经把它们混成一个了）。
+#
+#   现改为 G3s，与 G3r（组合链运行时探针）配对：
+#     G3s = 静态能力盘点（只能报 WARN/PASS/SKIPPED）
+#     G3r = 实际走一遍调用链（可报 FAIL/PASS/SKIPPED）
+#   G3（不带后缀）专属 check_service_principal.py 的硬编码密钥检查。
 
 
 def check_combo_chains(servers, repo=None):
-    """G3：单服务器审计看不到的**组合爆炸半径**。
+    """G3s：单服务器审计看不到的**组合爆炸半径**（静态版）。
 
     真实案例（Anthropic mcp-server-git CVE-2025-68143/68144/68145）：
       单个 server git_init 无路径校验 看似只是「参数校验缺失」，
@@ -286,7 +295,7 @@ def check_combo_chains(servers, repo=None):
     if not servers:
         # ⚠ 返回单dict（与其他三个检查一致）
         return {
-            "id": "G3", "title": "跨服务器组合链（爆炸半径）",
+            "id": "G3s", "title": "跨服务器组合链（爆炸半径）",
             "status": "SKIPPED", "severity": "HIGH",
             "detail": "未提供 --servers 清单，**本项未测**。"
                       "单服务器视角看不到组合爆炸，"
@@ -398,7 +407,7 @@ def check_combo_chains(servers, repo=None):
         lines.append("未发现已知危险能力组合")
 
     return {
-        "id": "G3", "title": "跨服务器组合链（爆炸半径）",
+        "id": "G3s", "title": "跨服务器组合链（爆炸半径）",
         "status": status, "severity": sev,
         "detail": "\n".join(lines).replace("\n", "\n       "),
         "inventory": inventory,

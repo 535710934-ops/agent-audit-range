@@ -132,6 +132,23 @@ JOBS = [
       "--git", "http://127.0.0.1:9011/mcp"], "9016", "single", 1),
 ]
 
+def _doc_drift_args():
+    """把 AUDIT_DOC_DIR（分号分隔）转成 check_doc_drift.py 的 --docs 参数。
+
+    没设这个环境变量就返回空 —— 检查器会只扫仓库内文档，
+    并在一份都没扫到时自己报 SKIPPED，**不会静默通过**。
+    """
+    raw = os.environ.get("AUDIT_DOC_DIR", "").strip()
+    if not raw:
+        return []
+    args = []
+    for d in raw.split(";"):
+        d = d.strip()
+        if d:
+            args += ["--docs", d]
+    return args
+
+
 REGRESSION = [
     ("REG-Day2-MCP", "check_coverage.py", []),
     ("REG-Day3-CASEBOOK", "test_casebook.py", []),
@@ -140,6 +157,15 @@ REGRESSION = [
     ("REG-Day9-SEMANTIC", "check_semantic_rewrite.py", []),
     # 控制字符 / ANSI 转义（garak 交叉验证暴露的盲区，Day 10 补）
     ("REG-Day10-CTRL", "check_control_chars.py", []),
+    # 文档漂移 + 检查项撞号（Day 13 补）
+    #
+    # ⚠ 别用 os.path.join(ROOT, "..", ...) 去拼仓库外的目录 ——
+    #   交付文档在 D 盘，仓库在 C 盘，跨盘符的相对路径永远拼不出去
+    #   （我第一版就写错了，拼出 C:/Users/work Buddy，结果「扫描 0 份」还显示 ✓）。
+    #   改成环境变量显式传入，多个目录用分号分隔：
+    #     set AUDIT_DOC_DIR=D:\...\outputs
+    #   不传也能跑（只扫仓库内 README / docs），不会假通过。
+    ("REG-Day13-DOCDRIFT", "check_doc_drift.py", _doc_drift_args(), True),
     # 泄漏评分器校准（Day 13 补）—— **故意以非零退出码注册**：
     # 它当前是 WARN（BREACH 档阈值选错层级，未修），所以这里允许非零。
     # ⚠ 这种「允许非零」的注册方式有风险：它可能掩盖将来真正的失败。
