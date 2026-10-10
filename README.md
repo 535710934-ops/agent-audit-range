@@ -1,6 +1,6 @@
 # agent-audit-range
 
-**8 组对照靶场 + 22 项一键回归**，用于验证 AI agent / MCP Server 安全审计流程。
+**8 组对照靶场 + 25 项一键回归**，用于验证 AI agent / MCP Server 安全审计流程。
 
 不是又一个扫描器。攻击 payload 那一侧已经很挤了 —— promptfoo 有 155 个插件，
 garak、DeepTeam、Giskard、PyRIT、AgentDojo 各有覆盖。**缺的不是 payload，缺的是
@@ -24,9 +24,9 @@ python tools/run_all.py
 
 ```
 [主任务 18 项]  ...全部 OK
-[回归核对 4 项] ...全部 OK
+[回归核对 7 项] ...全部 OK
 汇总  检查项判定: FAIL=25 HIT=2 INFO=12 PASS=34 SKIPPED=4 WARN=7
-      任务: ERR 0 | BROKEN 0 | FAIL 0 | 合计 22 | 约 25s
+      任务: ERR 0 | BROKEN 0 | FAIL 0 | 合计 25 | 约 26s
 ```
 
 `ERR 0 / BROKEN 0 / FAIL 0` 是**任务**维度（进程崩了 / 判定器没看见东西 / 工具报错）；
@@ -142,7 +142,7 @@ ANSI 转义（**已补**，见 `check_control_chars.py`）、包幻觉、训练�
 targets/          8 组对照靶场，纯标准库 HTTP server
 tools/
   start_targets.py      一键起全部 16 个靶场
-  run_all.py            一键跑 22 项回归，输出 runs/summary.json
+  run_all.py            一键跑 25 项回归，输出 runs/summary.json
   audit_mcp.py          MCP Server 配置面审计（A1–F2）
   audit_tenant.py       跨身份越权差分
   audit_egress.py       外联通道 + 跨服务器组合链
