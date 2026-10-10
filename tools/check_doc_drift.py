@@ -121,6 +121,10 @@ DEFAULT_DIRS = [
 ]
 DEFAULT_FILES = [
     os.path.join(ROOT, "README.md"),
+    # 开源副本的 README 也要扫 —— 它是唯一对外可见的 README，
+    # 2026-10-10 实测发现它还写着「22 项回归」（实为 25 项）：
+    # 本检查器上线第一天就漏掉了自己仓库的对外门面。
+    os.path.join(ROOT, "open-source", "README.md"),
 ]
 EXCLUDE = {"agent-security-audit-methodology.md"}
 
