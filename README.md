@@ -92,6 +92,9 @@ python tools/run_all.py
 
 **覆盖面广 ≠ 命中率高。** 高严重度事件恰恰集中在方法论结构性地看不见的地方。
 
+11 个事件的完整事实清单（CVE 编号、攻击链、来源、为什么通用扫描器抓不到）
+见 [`docs/public-incidents.md`](docs/public-incidents.md)。
+
 ### 三个结构性缺口
 
 | # | 缺口 | 为什么扫不出来 |
