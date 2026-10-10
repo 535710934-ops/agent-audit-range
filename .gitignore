@@ -1,0 +1,21 @@
+# 运行产物
+runs/
+reports/*.json
+!reports/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# 靶场工作区（运行时生成，含探针落盘的 payload）
+targets/combo_vuln/ws_vuln/
+targets/combo_vuln/ws_safe/
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

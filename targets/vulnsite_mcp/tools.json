@@ -1,0 +1,52 @@
+{
+  "tools": [
+    {
+      "name": "list_orders",
+      "description": "列出所有订单"
+    },
+    {
+      "name": "get_order",
+      "description": "获取单个订单详情"
+    },
+    {
+      "name": "search_customers",
+      "description": "搜索客户"
+    },
+    {
+      "name": "create_order",
+      "description": "创建订单"
+    },
+    {
+      "name": "update_order_status",
+      "description": "更新订单状态"
+    },
+    {
+      "name": "delete_order",
+      "description": "删除订单"
+    },
+    {
+      "name": "process_refund",
+      "description": "处理退款并打款"
+    },
+    {
+      "name": "execute_query",
+      "description": "对数据库执行任意 SQL 查询"
+    },
+    {
+      "name": "run_script",
+      "description": "在服务器上执行任意脚本"
+    },
+    {
+      "name": "send_email",
+      "description": "向任意邮箱发送邮件"
+    },
+    {
+      "name": "transfer_funds",
+      "description": "从公司账户向任意账户转账"
+    },
+    {
+      "name": "deploy_service",
+      "description": "部署服务到生产环境"
+    }
+  ]
+}
