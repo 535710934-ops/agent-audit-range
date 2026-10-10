@@ -140,6 +140,12 @@ REGRESSION = [
     ("REG-Day9-SEMANTIC", "check_semantic_rewrite.py", []),
     # 控制字符 / ANSI 转义（garak 交叉验证暴露的盲区，Day 10 补）
     ("REG-Day10-CTRL", "check_control_chars.py", []),
+    # 泄漏评分器校准（Day 13 补）—— **故意以非零退出码注册**：
+    # 它当前是 WARN（BREACH 档阈值选错层级，未修），所以这里允许非零。
+    # ⚠ 这种「允许非零」的注册方式有风险：它可能掩盖将来真正的失败。
+    #   所以下面单独跑一次并检查输出里是否含 STATUS 行，
+    #   而不是只信退出码（纪律 3：PASS ≠ SKIPPED，非零 ≠ 一定坏）。
+    ("REG-Day13-LEAKCAL", "calibrate_leak_scorer.py", [], True),
 ]
 
 
@@ -309,20 +315,37 @@ def main():
 
     # ---------- 回归核对 ----------
     print("\n[回归核对 %d 项]" % len(REGRESSION))
-    for name, tool, args in REGRESSION:
+    for item in REGRESSION:
+        name, tool, args = item[0], item[1], item[2]
+        allow_warn = len(item) > 3 and item[3]
         cmd = [PY, os.path.join(HERE, tool)] + args
         try:
             p = subprocess.run(cmd, capture_output=True, text=True,
                                timeout=300, env=_ENV, cwd=HERE)
-            ok = (p.returncode == 0)
-            tail = [l for l in p.stdout.strip().splitlines()
-                    if l.strip()][-1:] or [""]
-            print("  %-18s %-7s %s" % (name, "OK" if ok else "FAIL",
-                                       tail[0][:54]))
-            results.append({"name": name, "tool": tool,
-                            "status": "OK" if ok else "FAIL",
+            out = p.stdout or ""
+            # ⚠ 不能只看退出码。allow_warn 的项**本来就非零**，
+            #   若只判退出码，它永远是 FAIL；若放开非零，又可能掩盖真失败。
+            #   所以改成解析输出里的 STATUS 行 —— 看结论，不看退出码（纪律 3）。
+            status_lines = [l.strip() for l in out.splitlines()
+                            if l.strip().startswith("STATUS:")]
+            if allow_warn:
+                # 期望输出里必须出现 STATUS 行，且只能是 OK / WARN（明确允许的两态）
+                if not status_lines:
+                    st, note = "FAIL", "无 STATUS 行（判定器没说结论）"
+                else:
+                    word = status_lines[-1].split(":", 1)[1].strip().split()[0]
+                    if word in ("OK", "WARN"):
+                        st, note = "OK", "允许态 %s" % word
+                    else:
+                        st, note = "FAIL", "非允许态 %s" % word
+            else:
+                st = "OK" if p.returncode == 0 else "FAIL"
+                note = ""
+            tail = [l for l in out.strip().splitlines() if l.strip()][-1:] or [""]
+            print("  %-18s %-7s %s" % (name, st, (note or tail[0])[:54]))
+            results.append({"name": name, "tool": tool, "status": st,
                             "checks": {}, "kind": "regression",
-                            "last_line": tail[0]})
+                            "last_line": tail[0], "note": note})
         except Exception as e:
             print("  %-18s %-7s %s" % (name, "ERR", str(e)[:60]))
             results.append({"name": name, "tool": tool, "status": "ERR",
