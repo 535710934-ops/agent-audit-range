@@ -138,6 +138,8 @@ REGRESSION = [
     ("REG-Day4-TENANT", "check_coverage_tenant.py", []),
     # 语义改写漏检率实测（盲区量化，非靶场任务）
     ("REG-Day9-SEMANTIC", "check_semantic_rewrite.py", []),
+    # 控制字符 / ANSI 转义（garak 交叉验证暴露的盲区，Day 10 补）
+    ("REG-Day10-CTRL", "check_control_chars.py", []),
 ]
 
 

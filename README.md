@@ -115,8 +115,24 @@ python tools/run_all.py
 
 ### 完全未覆盖
 
-多模态通道、向量库投毒、长上下文衰减、写事务回滚、
+多模态通道、向量库投毒、长上下文衰减、写事务回滚、训练数据泄漏重放、
 真实 LLM 上的越狱成功率（需要 API key 实测，本仓库不含）。
+
+多模态这一条不是我一个人说的 —— **promptfoo 与 garak 两家独立工具都有专门 probe**，
+详见 [`docs/public-incidents.md`](docs/public-incidents.md) 之外的说明：
+两份攻击面清单的交叉结果记在方法论里（不开源），已确认的新增盲区有
+ANSI 转义（**已补**，见 `check_control_chars.py`）、包幻觉、训练数据泄漏重放。
+
+### 关于「和 garak / promptfoo 的关系」
+
+两份清单我都读过（garak 的 probe 清单从源码目录直接读，**不需要安装** ——
+`pip install garak` 在本机跑了 4 小时 58 分钟后因下载中断失败，但目的不依赖安装）。
+
+结论是：**它们主要在 LLM 侧（越狱、毒性、幻觉、训练数据泄漏），
+本仓库主要在部署 / 配置 / 授权侧。重叠面积很小。**
+
+这解释了「扫描器已经很多」和「高严重度事件仍然抓不到」为什么能同时成立 ——
+不是工具不行，是**层面不同**。
 
 ---
 
@@ -135,6 +151,7 @@ tools/
   probe_combo.py        组合链运行时探针（真的走一遍链）
   probe_multiturn.py    多轮渐进升级（几轮被打穿）
   check_semantic_rewrite.py  语义改写盲区量化（含留出集）
+  check_control_chars.py     控制字符 / ANSI 转义（含上下文判定）
   check_coverage*.py    漏报核对
 runs/              运行产物（gitignored）
 ```
