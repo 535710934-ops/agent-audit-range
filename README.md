@@ -10,6 +10,41 @@ garak、DeepTeam、Giskard、PyRIT、AgentDojo 各有覆盖。**缺的不是 pay
 
 ---
 
+## Executive Summary (English)
+
+**What this is:** a benchmark range and toolchain for auditing AI-agent / MCP-server
+security — built around paired targets (deliberately vulnerable + hardened) so every
+check is validated both ways: the vulnerable side must be caught, the hardened side
+must stay clean.
+
+**What's inside:**
+
+- **10 target pairs** on localhost only — 8 pairs use a simplified range protocol
+  (ports 9001–9016) for fast regression; 2 pairs speak **real MCP** (JSON-RPC 2.0 /
+  Streamable HTTP, ports 9017–9018) with seeded flaws that mirror the 2025–2026
+  wild: tool-description injection, unscoped SQL/shell tools, stack traces in errors,
+  predictable session IDs, missing auth, confirmation-free writes.
+- **18 audit tools** (`tools/`) — zero-dependency Python stdlib: multi-turn escalation,
+  credential/session leakage, capability grant abuse, cross-server combo chains,
+  deployment leaks, semantic-rewrite blind-spot quantification (with held-out sets).
+- **A remote MCP scanner** (`toolkit/`) — passive, 6 domains / 16 checks mapped to
+  OWASP for LLM Top 10, never calls the target's tools, and refuses to run against
+  targets without a declared authorization (self / CTF / bounty / written).
+- **`SKIPPED` is never folded into `PASS`.** Unreachable ≠ secure — the most
+  dangerous failure mode is "couldn't test" being read as "no problem".
+
+**Verified:** bidirectional self-check 9/9; full run catches 6 flaws on the vulnerable
+target with zero false positives on the hardened one. A clean `git clone` reproduces
+all of it with four commands and no third-party dependencies.
+
+**What this is not:** a scanner marketing page. Payload generation is a crowded space
+(promptfoo, garak, PyRIT, AgentDojo…). This project works the other side of the
+problem: verdicts, attribution, and honest disclosure of what cannot be tested.
+
+> The audit methodology itself is not open-sourced. Targets and tools are.
+
+---
+
 ## 快速开始
 
 ```bash
