@@ -45,6 +45,19 @@ problem: verdicts, attribution, and honest disclosure of what cannot be tested.
 
 ---
 
+## 免费快检 · Free Snapshot Audit
+
+**中文**：你在维护一个 AI agent / MCP 相关的项目？可以申请一次**免费的被动安全快检**（48 小时内交付）：
+
+- **交付物**：一份脱敏 HTML 报告——部署层泄漏、工具权限面、错误信息暴露、会话管理、CORS 等协议层观察，逐项映射 OWASP LLM Top 10。长什么样：[`reports/sample-report-snapshot.html`](reports/sample-report-snapshot.html)
+- **怎么申请**：邮件至 `535710934@qq.com`（标题 `[Audit Request] + 项目名`），写明：① 仓库/部署地址 ② 确认这是你拥有或维护的项目（self）③ 你最担心的一个点
+- **边界（先说清）**：被动协议层观察——不执行你的工具、不进内网、不改代码；需要额外输入才能测的项如实记作「未测」，绝不记作「通过」；不构成安全结论或合规认证
+- **成本**：¥0，不需要任何回报承诺。这套东西靠深度审计与月度复扫维持运转
+
+**English**: Maintaining an AI-agent / MCP project? Request a **free passive snapshot audit** (48h turnaround): email `535710934@qq.com` with the subject `[Audit Request] <project name>`, including ① repo/deployment URL, ② confirmation that you own or maintain it (`self`), ③ the one thing that worries you most. You get a sanitized HTML report of protocol-layer observations (leaks, tool-permission surface, error handling, sessions, CORS) mapped to OWASP LLM Top 10 — sample: [`reports/sample-report-snapshot.html`](reports/sample-report-snapshot.html). Passive only: no tool execution, no internal access, no code changes; untestable items are marked **untested**, never "passed". Not a security verdict, not a compliance certification.
+
+---
+
 ## 快速开始
 
 ```bash
