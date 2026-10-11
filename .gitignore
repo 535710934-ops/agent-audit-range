@@ -3,6 +3,9 @@ runs/
 reports/*.json
 !reports/.gitkeep
 
+# promptfoo eval 产物（验证证据留存本机，不入库）
+toolkit/promptfoo/out*.json
+
 # Python
 __pycache__/
 *.py[cod]

@@ -1,0 +1,22 @@
+{
+  "_说明": [
+    "本地自检清单：只扫本仓库自建的两个协议靶场。",
+    "用来验证「批量 + 脱敏报告 + 预期对照」三条链路是否同时成立。",
+    "真要扫第三方目标，请复制 targets.example.json 并补齐 authorization。"
+  ],
+  "targets": [
+    {
+      "name": "本地协议靶场 · 漏洞版",
+      "url": "http://127.0.0.1:9017/mcp",
+      "authorization": { "kind": "self", "note": "本仓库 targets/mcp_proto_vuln" },
+      "expect": "vuln"
+    },
+    {
+      "name": "本地协议靶场 · 安全版（阴性对照）",
+      "url": "http://127.0.0.1:9018/mcp",
+      "token": "safe-token-9f2c41",
+      "authorization": { "kind": "self", "note": "本仓库 targets/mcp_proto_safe" },
+      "expect": "safe"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "_说明": [
+    "MCP 扫描目标清单。**每条必须有 authorization 字段，否则整个清单被拒绝执行。**",
+    "",
+    "为什么把这个 gate 写死在工具里，而不是靠自觉：",
+    "  · 一个「输入 URL 就能扫」的 MCP 扫描器，落到错误的人手里就是攻击工具；",
+    "  · 落到公开仓库里就是法律风险 —— 别人会拿它去扫他们没有权限的目标；",
+    "  · 而「加个 flag 强制勾选我已获授权」这种授权形同虚设：",
+    "    它拦不住任何人，只制造了「我有授权」的错觉。",
+    "  · 所以这里要求的是**可核查的依据**：bounty / written 必须填 reference。",
+    "",
+    "拿不到授权的目标，正确做法是**不扫**，而不是「先扫了再说」。"
+  ],
+
+  "authorization_kinds": {
+    "self": "你自己拥有或控制的 server",
+    "ctf": "公开 CTF / 靶场平台（明确邀请测试）",
+    "bounty": "在有效赏金计划范围内（必须填 program policy URL）",
+    "written": "书面授权（合同 / 邮件 / 工单，必须填 reference）"
+  },
+
+  "targets": [
+    {
+      "name": "本地协议靶场 · 漏洞版",
+      "url": "http://127.0.0.1:9017/mcp",
+      "authorization": { "kind": "self", "note": "本仓库自建靶场 targets/mcp_proto_vuln" },
+      "expect": "vuln"
+    },
+    {
+      "name": "本地协议靶场 · 安全版（阴性对照）",
+      "url": "http://127.0.0.1:9018/mcp",
+      "token": "safe-token-9f2c41",
+      "authorization": { "kind": "self", "note": "本仓库自建靶场 targets/mcp_proto_safe" },
+      "expect": "safe"
+    },
+
+    {
+      "name": "【示例 · 请勿直接运行】第三方公开 MCP server",
+      "url": "https://example-mcp-server.invalid/mcp",
+      "authorization": { "kind": "bounty", "reference": "" },
+      "_注释": [
+        "这一条是**故意留的无效示例**，用来演示 gate 会拦：",
+        "  kind=bounty 但 reference 为空 → 整个清单被拒绝执行。",
+        "真要扫某个第三方目标时，先去它的赏金计划页确认该资产在范围内，",
+        "把 policy URL 填进 reference，再去掉本行的下划线前缀键。",
+        "",
+        "⚠ 在没有 reference 的情况下扫描第三方生产端点 = 未授权访问，",
+        "   在多数司法辖区这是违法行为，与工具是否「被动」无关。"
+      ]
+    }
+  ]
+}

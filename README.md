@@ -55,6 +55,35 @@ python tools/run_all.py
 
 ---
 
+## 真实 MCP 协议靶场与 toolkit/（2026-10 新增）
+
+上面 8 组走的是**靶场简化协议**（`GET /mcp` 直返工具清单），用于回归自测。
+`toolkit/` 与 `targets/mcp_proto_*` 说的是**真 MCP**（JSON-RPC 2.0，Streamable HTTP：
+`initialize → notifications/initialized → tools/list`），面向「有授权的真实目标」设计：
+
+| 文件 | 作用 |
+|---|---|
+| `targets/mcp_proto_vuln/` :9017 | 真协议漏洞靶场：9 类缺陷（工具描述间接注入、生产库直连 SQL、shell 执行、错误泄栈、可预测 session id、无认证、写工具零确认…） |
+| `targets/mcp_proto_safe/` :9018 | 同协议阴性对照（Bearer 认证 + 随机 session + 最小错误面） |
+| `toolkit/mcp_client.py` | 真 MCP 客户端：零依赖标准库，握手 / session 捕获回传 / 工具枚举调用 / JSON 与 SSE 双模式 |
+| `toolkit/audit_remote.py` | 被动扫描器：六域 16 项，**只看协议层不调用目标工具**，每项带 OWASP LLM 映射 + 授权 gate + `--selfcheck` 双向自检 |
+| `toolkit/run_all.py` | 批量编排 + 脱敏 HTML 报告 + 预期对照 |
+
+**三条硬约束（写进代码）**：① 每个目标必须带授权声明（self / ctf / bounty / written），缺失即退出码 2 拒绝执行；② SKIPPED 永不折算 PASS——扫不到 ≠ 没问题；③ 脱敏只作用于公开产物，JSON 原件保留完整供授权方自查。
+
+```bash
+python targets/mcp_proto_vuln/server.py &   # :9017
+python targets/mcp_proto_safe/server.py &   # :9018
+python toolkit/audit_remote.py --selfcheck  # 双向自检：9/9
+python toolkit/run_all.py --targets toolkit/targets.local.json
+# 预期：漏洞版 6 FAIL；安全版 14 PASS + 1 SKIPPED，零误报
+```
+
+`toolkit/promptfoo/` 是开源扫描器 promptfoo（0.124.1）的接入验证配置，
+含对两个靶场的真机跑通记录与踩坑笔记（`toolkit/promptfoo/README.md`）。
+
+---
+
 ## 三种状态枚举（不可互换）
 
 这是本仓库最重要的约定，也是最容易搞混的地方：
@@ -139,7 +168,7 @@ ANSI 转义（**已补**，见 `check_control_chars.py`）、包幻觉、训练�
 ## 目录
 
 ```
-targets/          8 组对照靶场，纯标准库 HTTP server
+targets/          10 组对照靶场（9001–9016 靶场简化协议 + 9017/9018 真 MCP 协议）
 tools/
   start_targets.py      一键起全部 16 个靶场
   run_all.py            一键跑 25 项回归，输出 runs/summary.json
@@ -153,6 +182,7 @@ tools/
   check_semantic_rewrite.py  语义改写盲区量化（含留出集）
   check_control_chars.py     控制字符 / ANSI 转义（含上下文判定）
   check_coverage*.py    漏报核对
+toolkit/           真 MCP 对外扫描工具链（客户端 / 被动扫描器 / 编排器 / promptfoo 验证）
 runs/              运行产物（gitignored）
 ```
 

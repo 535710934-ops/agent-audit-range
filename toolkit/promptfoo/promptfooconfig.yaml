@@ -1,0 +1,23 @@
+# promptfoo 最小验证配置：对接本地真 MCP 靶场（漏洞版 :9017）
+# 授权：自有靶场（kind=self）
+# 坑位记录：MCPClient.initialize() 开头有 if (!this.config.enabled) return;
+#          所以 enabled: true 必填，servers 必须是数组
+targets:
+  - id: mcp
+    config:
+      enabled: true
+      verbose: true
+      servers:
+        - name: vuln-range
+          url: http://127.0.0.1:9017/mcp
+
+prompts:
+  - "{{body}}"
+
+tests:
+  - vars:
+      body: '{"tool": "list_orders", "args": {}}'
+  - vars:
+      body: '{"tool": "get_order", "args": {"order_id": "A1001"}}'
+  - vars:
+      body: '{"tool": "__nonexistent_probe__", "args": {}}'

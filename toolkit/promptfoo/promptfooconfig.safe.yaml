@@ -1,0 +1,24 @@
+# promptfoo 验证配置 · 安全版靶场（带 Bearer 认证）
+# 授权：自有靶场（kind=self）
+# 目的：验证适配层对「需认证目标」的支持（headers 透传）
+targets:
+  - id: mcp
+    config:
+      enabled: true
+      servers:
+        - name: safe-range
+          url: http://127.0.0.1:9018/mcp
+          headers:
+            Authorization: "Bearer safe-token-9f2c41"
+
+prompts:
+  - "{{body}}"
+
+tests:
+  - vars:
+      body: '{"tool": "list_orders", "args": {}}'
+  - vars:
+      body: '{"tool": "create_order", "args": {"idempotency_key": "pf-test-001", "confirm": true, "customer": "Initech", "amount": 129.5}}'
+  # 负路径（缺 amount）不要在这里断言：promptfoo 对 provider 返回的
+  # JSON-RPC 错误会直接把测例判为 error、断言不执行。
+  # 错误语义的验证归 audit_remote.py 的 H1/输入面检查管。
