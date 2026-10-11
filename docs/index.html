@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Greybox — MCP / AI Agent Security Audit</title>
+<meta name="description" content="Independent security audit for AI-agent and MCP-server deployments. Paired targets, two-way validation, honest disclosure of what cannot be tested.">
+<style>
+  :root{
+    --bg:#faf9f6; --panel:#ffffff; --ink:#1c1c1a; --dim:#6b6a64;
+    --line:#e2e0d8; --accent:#0f6e56; --accent-ink:#085041;
+    --warn:#993c1d; --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:860px;margin:0 auto;padding:0 24px}
+  header{padding:64px 0 40px;border-bottom:1px solid var(--line)}
+  .kicker{font-family:var(--mono);font-size:13px;color:var(--accent-ink);letter-spacing:.08em;text-transform:uppercase}
+  h1{font-size:clamp(28px,5vw,42px);line-height:1.15;font-weight:700;margin:14px 0 10px;letter-spacing:-.01em}
+  .tagline{font-size:19px;color:var(--dim);max-width:640px}
+  .tagline strong{color:var(--ink);font-weight:600}
+  section{padding:44px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:13px;font-family:var(--mono);color:var(--accent-ink);letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px}
+  h3{font-size:18px;font-weight:600;margin:0 0 6px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+  .card .price{font-family:var(--mono);font-size:13px;color:var(--accent-ink);margin-bottom:8px}
+  .card p{font-size:14.5px;color:var(--dim)}
+  .card p b{color:var(--ink);font-weight:600}
+  ul{list-style:none}
+  li{padding-left:20px;position:relative;margin-bottom:8px;font-size:15px}
+  li::before{content:"—";position:absolute;left:0;color:var(--accent)}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:22px 0}
+  .stat{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--panel)}
+  .stat b{display:block;font-family:var(--mono);font-size:22px;color:var(--accent-ink)}
+  .stat span{font-size:12.5px;color:var(--dim)}
+  .honest{background:#faf3ef;border:1px solid #eddcd2;border-radius:10px;padding:20px 22px;margin-top:20px}
+  .honest h3{color:var(--warn)}
+  .honest li{font-size:14.5px}
+  .honest li::before{color:var(--warn)}
+  a{color:var(--accent-ink);text-decoration:none;border-bottom:1px solid #bfd6cf}
+  a:hover{border-bottom-color:var(--accent-ink)}
+  code,.mono{font-family:var(--mono);font-size:.92em;background:#f0efe9;padding:1px 6px;border-radius:4px}
+  .cta{background:var(--ink);color:#f5f4ef;border-radius:12px;padding:36px 38px;margin:44px 0}
+  .cta h2{color:#9fe1cb;margin-bottom:12px}
+  .cta p{max-width:640px;font-size:15.5px;color:#d8d7cf;margin-bottom:14px}
+  .cta .mail{font-family:var(--mono);font-size:17px;color:#fff;border-bottom:1px solid #57554e}
+  .cta .fine{font-size:12.5px;color:#8b8a82;margin-top:16px}
+  .cn{margin-top:26px;padding-top:20px;border-top:1px dashed var(--line);font-size:14.5px;color:var(--dim)}
+  .cn b{color:var(--ink)}
+  footer{padding:30px 0 60px;font-size:13px;color:var(--dim)}
+  footer p{margin-bottom:6px}
+  @media print{.cta{background:#fff;color:var(--ink);border:1px solid var(--line)} .cta h2{color:var(--accent-ink)} .cta p,.cta .fine{color:var(--ink)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">Independent Security Research · AI Agent / MCP</div>
+  <h1>Deployment-layer security audit,<br>with the honesty part built in.</h1>
+  <p class="tagline">Paired targets. Two-way validation. <strong>Every check must catch the vulnerable side and stay clean on the hardened side — anything untestable is marked untested, never "passed."</strong></p>
+</header>
+
+<section>
+  <h2>What this is</h2>
+  <p style="max-width:700px">An open benchmark range and zero-dependency audit toolkit for the <strong>deployment and permission layer</strong> of AI agents and MCP servers — where tools execute, credentials live, and context gets poisoned. I audit what the model layer can't see: leaks, over-granted tools, unsafe defaults, session handling, CORS, error disclosure.</p>
+  <p style="max-width:700px;margin-top:12px;color:var(--dim)">Not a scanner marketing page, and not model-side red teaming — that layer already has excellent free tools (promptfoo, garak, PyRIT, AgentDojo).</p>
+  <div class="stats">
+    <div class="stat"><b>10</b><span>paired target groups (vulnerable + hardened)</span></div>
+    <div class="stat"><b>18</b><span>audit tools, zero-dependency Python stdlib</span></div>
+    <div class="stat"><b>16</b><span>passive checks · six domains · OWASP LLM Top 10 mapped</span></div>
+    <div class="stat"><b>9/9</b><span>two-way self-check · 6 FAIL / 14 PASS + 1 SKIPPED, zero false positives</span></div>
+  </div>
+  <ul>
+    <li>Two protocol-true target groups (JSON-RPC 2.0 / Streamable HTTP) — seeded flaws mirror 2025–2026 wild incidents: tool-description injection, unscoped SQL/shell tools, error stack leaks, predictable sessions, missing auth</li>
+    <li>Passive observation only: no tool execution against targets, no internal access, no state changes</li>
+    <li>Built-in authorization gate: every target requires a declared authorization (self / ctf / bounty / written) or the tool refuses to run</li>
+  </ul>
+</section>
+
+<section>
+  <h2>What I cannot prove (read this first)</h2>
+  <div class="honest">
+    <ul>
+      <li>Reverse-mapping three real CVSS 9.x incidents with all 16 checks: <b>1/16, 1/16, 0/16</b>. Semantic paraphrase dropped detection from 75% to 0%. I publish this as a regression baseline because knowing how far I fall short is the only honest way to improve.</li>
+      <li>An audit report is <b>not</b> a security verdict and <b>not</b> a compliance certification. Untestable items are marked untested — SKIPPED never counts as PASS.</li>
+      <li>CVE numbers cited anywhere are taken from public sources and not independently verified.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>Services</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Free snapshot audit</h3>
+      <div class="price">¥0 · 48h turnaround</div>
+      <p>For AI-agent / MCP project maintainers. Passive protocol-layer snapshot mapped to OWASP LLM Top 10, delivered as a sanitized HTML report. <b>Sample:</b> <a href="reports/sample-report-snapshot.html">see a real one</a>.</p>
+    </div>
+    <div class="card">
+      <h3>Full audit report</h3>
+      <div class="price">¥3,000–8,000 · 5 business days</div>
+      <p>What the snapshot can't tell you: <b>what each finding means for your business, what to fix first</b> (down to files), and a retest after you ship fixes. Includes a one-page executive summary you can take to a meeting.</p>
+    </div>
+    <div class="card">
+      <h3>Monthly rescan</h3>
+      <div class="price">¥800–2,000 / mo</div>
+      <p>Your team ships continuously; I watch the regression surface after every release and tell you within 24h what broke and what got fixed.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Request an audit</h2>
+  <p>Email <span class="mono">535710934@qq.com</span> with the subject <span class="mono">[Audit Request] &lt;project name&gt;</span> and include: ① repo / deployment URL, ② confirmation that you own or maintain it, ③ the one thing that worries you most.</p>
+  <p style="margin-top:10px;color:var(--dim)">Free snapshot audits are limited to projects you own or maintain, one per project.</p>
+</section>
+
+<section>
+  <h2>中文 · 服务说明</h2>
+  <p class="cn"><b>我审计 AI agent 的部署层与权限面</b>——告诉你它会在哪里泄漏、哪里越权、哪里重复下单。不做模型侧红队，那一层已有免费工具做得很好。<br><br>
+  免费快检（¥0，48 小时）：面向 AI agent / MCP 项目维护者的被动协议层观察，OWASP LLM Top 10 映射，脱敏 HTML 报告。申请方式：邮件标题 <b>[Audit Request] + 项目名</b>，附仓库地址并确认项目归你维护。<br><br>
+  付费档（¥3,000–8,000）回答体检报告回答不了的三个问题：这些问题对你意味着什么、先修哪个、修没修好。月度复扫（¥800–2,000/月）回答：改了这么多，还安全吗。<br><br>
+  靶场与 18 个审计工具已开源；审计方法论本身不开源。我证明不了的东西（反查命中率、未覆盖面）在仓库 README 里逐条写明——<b>诚实是这套流程的第一交付物</b>。</p>
+</section>
+
+<div class="cta">
+  <h2>The honesty part is the product</h2>
+  <p>Most security pages sell certainty. I sell a process that documents what it can't prove — because the expensive failures in agent security come from checks that silently pass on things that were never tested.</p>
+  <p>If you deploy agents and want to know what your current posture actually is, email:</p>
+  <span class="mail">535710934@qq.com &nbsp;·&nbsp; [Audit Request]</span>
+  <p class="fine">Everything on this page is reproducible from the public repository. No testimonials yet — this practice is new, and I won't invent any.</p>
+</div>
+
+<footer>
+  <p>Repo: <a href="https://github.com/535710934-ops/agent-audit-range">github.com/535710934-ops/agent-audit-range</a> · Sample report: <a href="reports/sample-report-snapshot.html">snapshot example</a> · Public incidents baseline: <a href="public-incidents.md">public-incidents.md</a></p>
+  <p>All checks are passive protocol-layer observations and do not constitute a security verdict or compliance certification. Fee figures and policy details as of 2026-10; see repository README for the full honest-disclosure section.</p>
+  <p>© 2026 Greybox. Targets and tools are open-sourced; the audit methodology itself is not.</p>
+</footer>
+
+</div>
+</body>
+</html>
