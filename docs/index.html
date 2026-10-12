@@ -25,6 +25,7 @@
   .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
   .card .price{font-family:var(--mono);font-size:13px;color:var(--accent-ink);margin-bottom:8px}
+  .card h3 .tag{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);border:1px solid var(--accent-ink);border-radius:3px;padding:2px 6px;margin-left:6px;vertical-align:middle;white-space:nowrap}
   .card p{font-size:14.5px;color:var(--dim)}
   .card p b{color:var(--ink);font-weight:600}
   ul{list-style:none}
@@ -76,6 +77,7 @@
     <li>Two protocol-true target groups (JSON-RPC 2.0 / Streamable HTTP) — seeded flaws mirror 2025–2026 wild incidents: tool-description injection, unscoped SQL/shell tools, error stack leaks, predictable sessions, missing auth</li>
     <li>Passive observation only: no tool execution against targets, no internal access, no state changes</li>
     <li>Built-in authorization gate: every target requires a declared authorization (self / ctf / bounty / written) or the tool refuses to run</li>
+    <li>For enterprises: a <strong>read-only shadow-agent inventory</strong> — a complete list of the agents, MCP clients and tools already touching your data, and what each one can reach. No agent is executed, no business data is read.</li>
   </ul>
 </section>
 
@@ -96,7 +98,7 @@
     <div class="card">
       <h3>Free snapshot audit</h3>
       <div class="price">¥0 · 48h turnaround</div>
-      <p>For AI-agent / MCP project maintainers. Passive protocol-layer snapshot mapped to OWASP LLM Top 10, delivered as a sanitized HTML report. <b>Sample:</b> <a href="reports/sample-report-snapshot.html">see a real one</a>.</p>
+      <p>For AI-agent / MCP project maintainers — and for enterprises who want a first look at their shadow-agent surface. Passive protocol-layer snapshot mapped to OWASP LLM Top 10, delivered as a sanitized HTML report. <b>Sample:</b> <a href="reports/sample-report-snapshot.html">see a real one</a>.</p>
     </div>
     <div class="card">
       <h3>Full audit report</h3>
@@ -108,6 +110,11 @@
       <div class="price">¥800–2,000 / mo</div>
       <p>Your team ships continuously; I watch the regression surface after every release and tell you within 24h what broke and what got fixed.</p>
     </div>
+    <div class="card">
+      <h3>Shadow-agent inventory <span class="tag">for enterprises</span></h3>
+      <div class="price">¥15,000–30,000 · 3–5 business days</div>
+      <p>The first three tiers answer "does this system have problems." This one answers a different question: <b>how many agents are touching your data, what can each reach, and which to govern first.</b> Deliverables: a full inventory (who installed what, when), a permission × data-source matrix, a prioritized remediation list, a one-page executive summary, and a compliance control-gap map. <b>Read-only by design</b> — no agent is executed, no business data is read, no configuration is changed.</p>
+    </div>
   </div>
 </section>
 
@@ -115,6 +122,7 @@
   <h2>Request an audit</h2>
   <p>Email <span class="mono">535710934@qq.com</span> with the subject <span class="mono">[Audit Request] &lt;project name&gt;</span> and include: ① repo / deployment URL, ② confirmation that you own or maintain it, ③ the one thing that worries you most.</p>
   <p style="margin-top:10px;color:var(--dim)">Free snapshot audits are limited to projects you own or maintain, one per project.</p>
+  <p style="margin-top:10px">Enterprises: for a <b>shadow-agent inventory</b> (¥15,000–30,000, read-only), use the subject <span class="mono">[Inventory Request] &lt;company&gt;</span> and briefly describe where your agents run (endpoints / cloud / SaaS) and who should be the point of contact.</p>
 </section>
 
 <section>
@@ -122,6 +130,7 @@
   <p class="cn"><b>我审计 AI agent 的部署层与权限面</b>——告诉你它会在哪里泄漏、哪里越权、哪里重复下单。不做模型侧红队，那一层已有免费工具做得很好。<br><br>
   免费快检（¥0，48 小时）：面向 AI agent / MCP 项目维护者的被动协议层观察，OWASP LLM Top 10 映射，脱敏 HTML 报告。申请方式：邮件标题 <b>[Audit Request] + 项目名</b>，附仓库地址并确认项目归你维护。<br><br>
   付费档（¥3,000–8,000）回答体检报告回答不了的三个问题：这些问题对你意味着什么、先修哪个、修没修好。月度复扫（¥800–2,000/月）回答：改了这么多，还安全吗。<br><br>
+  <b>企业影子 agent 盘点（¥15,000–30,000，3–5 个工作日）</b>：前三档回答的是"某个系统有没有问题"，这一档回答的是"<b>我们公司到底有多少个 AI 在碰数据、每个能碰多少、先管哪个</b>"。交付：全量清单（谁装的、什么时候装的）、权限 × 数据源矩阵、优先级整改清单、一页决策者摘要、合规控制缺口对照表。<b>全程只读</b>——不执行任何 agent、不读业务数据、不改任何配置。<br><br>
   靶场与 18 个审计工具已开源；审计方法论本身不开源。我证明不了的东西（反查命中率、未覆盖面）在仓库 README 里逐条写明——<b>诚实是这套流程的第一交付物</b>。</p>
 </section>
 
