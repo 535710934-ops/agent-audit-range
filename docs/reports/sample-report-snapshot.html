@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sample Audit Report — Demo MCP Server (Sanitized) · Greybox</title>
+<meta name="description" content="Sanitized sample of a Greybox free snapshot audit report. Data produced against our own open-source target range — demonstration of report format only.">
+<style>
+  :root{
+    --bg:#faf9f6; --panel:#fff; --ink:#1c1c1a; --dim:#6b6a64; --line:#e2e0d8;
+    --accent:#0f6e56; --accent-ink:#085041; --fail:#993c1d; --pass:#0f6e56; --skip:#8a6d1f;
+    --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font:15px/1.6 -apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:0 24px}
+  header{padding:52px 0 32px;border-bottom:1px solid var(--line)}
+  .kicker{font-family:var(--mono);font-size:12px;color:var(--accent-ink);letter-spacing:.08em;text-transform:uppercase}
+  h1{font-size:clamp(24px,4vw,34px);line-height:1.2;font-weight:700;margin:12px 0 8px}
+  .sub{color:var(--dim);font-size:15px;max-width:680px}
+  h2{font-size:12.5px;font-family:var(--mono);color:var(--accent-ink);letter-spacing:.08em;text-transform:uppercase;margin:36px 0 14px}
+  table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:14px}
+  th{background:#f0efe9;text-align:left;font-weight:600;padding:10px 14px;font-size:13px;border-bottom:1px solid var(--line)}
+  td{padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .tag{display:inline-block;font-family:var(--mono);font-size:12px;padding:2px 9px;border-radius:99px;font-weight:600}
+  .tag.fail{background:#f7e8e0;color:var(--fail)}
+  .tag.pass{background:#e2f0ea;color:var(--pass)}
+  .tag.skip{background:#f4ecd8;color:var(--skip)}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:18px 0}
+  .stat{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--panel)}
+  .stat b{display:block;font-family:var(--mono);font-size:22px;color:var(--accent-ink)}
+  .stat span{font-size:12.5px;color:var(--dim)}
+  .note{background:#faf3ef;border:1px solid #eddcd2;border-radius:10px;padding:18px 20px;margin:18px 0}
+  .note h3{color:var(--fail);font-size:15px;margin-bottom:8px}
+  .note li{margin-left:18px;margin-bottom:6px;font-size:14px}
+  ul.plain{margin:10px 0 0 18px}
+  ul.plain li{margin-bottom:6px;font-size:14.5px}
+  p{max-width:720px;margin-bottom:10px;font-size:14.5px}
+  .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:20px 0;font-size:13.5px}
+  .meta div{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+  .meta b{color:var(--accent-ink);font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:3px}
+  footer{padding:26px 0 60px;font-size:12.5px;color:var(--dim);border-top:1px solid var(--line);margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">Greybox · Snapshot Audit Report (Sample)</div>
+  <h1>Deployment-layer snapshot: demo MCP server</h1>
+  <p class="sub">Sanitized example of the deliverable for the <b>free snapshot audit</b>. All data below was produced by the open-source toolkit against <b>our own target range</b> — not a client engagement. Format, structure and check taxonomy are identical to real deliveries.</p>
+</header>
+
+<div class="meta">
+  <div><b>Target</b>demo-mcp-server (owned range)</div>
+  <div><b>Authorization</b>self — owned test range</div>
+  <div><b>Mode</b>passive observation only</div>
+  <div><b>Checks</b>6 domains · 16 items</div>
+  <div><b>Mapping</b>OWASP Agentic AI Top 10 (ASI01–ASI10)</div>
+  <div><b>Turnaround</b>48h from authorization</div>
+</div>
+
+<section>
+  <h2>1 · Executive summary</h2>
+  <p>Two sibling targets were scanned: a deliberately vulnerable MCP server and its hardened counterpart. The vulnerable side <b>fails 6 of 16 checks</b>; the hardened side <b>passes 14, with 1 SKIPPED</b> (out of scanner reach — see honesty note). Both results are shown because <b>a check that cannot distinguish vulnerable from hardened proves nothing</b>.</p>
+  <div class="stats">
+    <div class="stat"><b>6/16</b><span>FAIL · vulnerable target</span></div>
+    <div class="stat"><b>14/16</b><span>PASS · hardened target</span></div>
+    <div class="stat"><b>1</b><span>SKIPPED · out of passive reach</span></div>
+    <div class="stat"><b>0</b><span>false positives on hardened side</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>2 · Findings — vulnerable target</h2>
+  <table>
+    <tr><th>Domain</th><th>Check</th><th>Result</th><th>Observation</th></tr>
+    <tr><td>AuthZ</td><td>Authorization gate</td><td><span class="tag fail">FAIL</span></td><td>Tools/list and tools/call respond without any Authorization header.</td></tr>
+    <tr><td>Info disclosure</td><td>Server fingerprint</td><td><span class="tag fail">FAIL</span></td><td>Error responses leak server build string and internal paths.</td></tr>
+    <tr><td>Tool hygiene</td><td>Tool description injection</td><td><span class="tag fail">FAIL</span></td><td>Tool description contains instructions addressed to the model, not the caller.</td></tr>
+    <tr><td>Tool hygiene</td><td>Over-privileged tool</td><td><span class="tag fail">FAIL</span></td><td>A read-only named tool accepts arbitrary SQL — scope far beyond its label.</td></tr>
+    <tr><td>Session</td><td>Session token entropy</td><td><span class="tag fail">FAIL</span></td><td>Session IDs are sequential and predictable.</td></tr>
+    <tr><td>Transport</td><td>CORS policy</td><td><span class="tag fail">FAIL</span></td><td>Access-Control-Allow-Origin reflects any origin with credentials allowed.</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>3 · Hardened counterpart (control)</h2>
+  <table>
+    <tr><th>Result</th><th>Count</th><th>Meaning</th></tr>
+    <tr><td><span class="tag pass">PASS</span></td><td>14</td><td>Checks distinguish hardened configuration from the vulnerable one — the pair validates the scanner.</td></tr>
+    <tr><td><span class="tag skip">SKIPPED</span></td><td>1</td><td>One item requires active probing beyond passive scope. <b>Skipped is never reported as passed.</b></td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>4 · OWASP Agentic AI Top 10 mapping</h2>
+  <table>
+    <tr><th>ASI</th><th>Category</th><th>Coverage</th></tr>
+    <tr><td>ASI01</td><td>Agent impersonation & hijack</td><td>Partial — session entropy & fingerprint checks</td></tr>
+    <tr><td>ASI02</td><td>Tool misuse</td><td>Direct — over-privileged tool & description injection checks</td></tr>
+    <tr><td>ASI03</td><td>Identity & permission chaining</td><td>Partial — authorization gate & token scope</td></tr>
+    <tr><td>ASI07</td><td>Agentic supply chain</td><td>Indirect — via tool description inspection</td></tr>
+    <tr><td>Others</td><td>Full mapping table</td><td>Included in paid report (per-check ASI cross-reference)</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>5 · What this report cannot tell you</h2>
+  <div class="note">
+    <h3>Honesty note</h3>
+    <ul>
+      <li>Reverse-mapping three real CVSS 9.x incidents with all 16 checks scored <b>1/16, 1/16, 0/16</b> — semantic paraphrase defeats pattern checks. Published as regression baseline.</li>
+      <li>This snapshot is <b>not</b> a security verdict and <b>not</b> a compliance certification.</li>
+      <li>Business logic, multi-step abuse chains and model-side risks are out of passive scope.</li>
+    </ul>
+  </div>
+  <p>The paid report (¥3,000–8,000) adds: per-finding business impact, prioritized fix list (down to files), a retest after you ship fixes, and the full ASI cross-reference.</p>
+</section>
+
+<footer>
+  <p>Sample only — data from our own open-source target range (github.com/535710934-ops/agent-audit-range). Sanitized. Not a client engagement, not a security verdict.</p>
+</footer>
+
+</div>
+</body>
+</html>
