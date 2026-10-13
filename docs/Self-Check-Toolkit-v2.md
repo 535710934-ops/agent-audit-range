@@ -2,11 +2,11 @@
 
 You deploy AI agents or MCP servers. Before you trust them with data and tools, run this self-check. It is a **passive, read-only** look at the *deployment and permission layer* — the part the model layer can't see: leaks, over-granted tools, unsafe defaults, session handling, CORS, error disclosure.
 
-**v2 = 双映射。** 同一份扫描结果，映射到两套官方清单：
-- **OWASP MCP Security Cheat Sheet（12 类，MCP 专项，官方控制项）** — 主参考
-- **OWASP Agentic AI Top 10（ASI01–ASI10，2025-12）** — 与 Cheat Sheet 有重叠，做交叉
+**v2 = dual mapping.** The same scan result maps to two official checklists:
+- **OWASP MCP Security Cheat Sheet (12 risks, MCP-specific, with official controls)** — primary reference
+- **OWASP Agentic AI Top 10 (ASI01–ASI10, 2025-12)** — overlaps with the Cheat Sheet; used as a cross-check
 
-两套都标注「toolkit 能测项 / 测不到（Untested）/ 官方控制项」，诚实划清"被动观察"的边界。
+Both label, per row, what the toolkit **can test / cannot test (Untested) / the official control the Cheat Sheet recommends** — drawing the "passive observation" boundary honestly.
 
 ## What's included
 1. **A copy of our zero-dependency audit scanner** (open-source, linked inside). Runs locally with nothing but the Python standard library — no `pip install`, no telemetry.
