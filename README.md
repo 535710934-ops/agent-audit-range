@@ -229,6 +229,20 @@ ANSI 转义（**已补**，见 `check_control_chars.py`）、包幻觉、训练�
 
 ---
 
+## 公开证据链（时间戳可核验）
+
+这条线做的事，都留了带时间戳、可回溯的公开记录（commit / 署名文章 / 第三方审计闭环 / 自助工具包）。不堆内容，只留能核的：
+
+| 时间 | 事实 | 可核验来源 |
+|---|---|---|
+| 2026-10-13 | 自助 $19 数字产品上线（被动 MCP / Agent 自查工具包，OWASP Cheat Sheet + ASI 双映射） | `creem.io/payment/prod_5OGGTcdFsQ7kJmmZjD6VEd` |
+| 2026-10-13 | 真实 server 上修掉 `Accept` 头 406（靶场全绿 ≠ 没 bug，真 server 一碰即挂） | 本仓库 commit `3030b25` |
+| 2026-10-13 | 一篇英文痛点长文：修 406 的真实经过 + 为什么「绿 ≠ 测到」 | `dev.to/535710934ops/my-scanner-passed-every-local-test-then-406d-on-a-real-mcp-server-that-gap-is-the-point-5971` |
+
+完整逐条证据链见 [`docs/EVIDENCE-LOG.md`](docs/EVIDENCE-LOG.md)。
+
+---
+
 ## 目录
 
 ```
