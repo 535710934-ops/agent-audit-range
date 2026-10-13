@@ -82,10 +82,16 @@ class MCPClient:
     # ------------------------------------------------------------ 底层
 
     def _headers(self, sse=False):
+        # ⚠ 2026-10-13 实测：initialize 必须带 "Accept: application/json,
+        #   text/event-stream"。规范（2025-03-26 起）规定单次 POST 的响应
+        #   可以是 JSON 也可以是 SSE 流，服务端用 Accept 判定你能否接收两种
+        #   形态。只发 "Accept: application/json" 会被严格实现回
+        #   **406 Not Acceptable**（exa 等现代远程 server 实测）。
+        #   旧写法（sse 才带 text/event-stream）在本地宽容靶场全过、一碰真
+        #   server 就 406 —— 正是「靶场对你友好」漏掉的真 bug。
         h = {
             "Content-Type": "application/json",
-            "Accept": ("application/json, text/event-stream" if sse
-                       else "application/json"),
+            "Accept": "application/json, text/event-stream",
             "User-Agent": UA,
         }
         if self.token:
