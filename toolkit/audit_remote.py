@@ -48,12 +48,43 @@ from mcp_client import MCPClient, MCPError   # noqa: E402
 
 # ============================================================ 知识库
 
+# OWASP MCP Security Cheat Sheet 风险类（官方 12 类）
+# 来源：https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html
+# 本工具是**协议层被动观察**，能测的只是其中"可观测子集"。
+# 映射到八域检查项（见下方域说明）：
+#   Cheat #1 Tool Poisoning      → C1/C2（工具描述注入特征）
+#   Cheat #2 Rug Pull            → C2（描述长度异常，单快照；跨时间需基线）
+#   Cheat #3 Tool Shadowing      → B3（高危能力工具 + 写占比）
+#   Cheat #4 Confused Deputy     → A2（session 是否强制；身份链路协议内不可见）
+#   Cheat #5 Data Exfiltration   → D1/D3/H1（响应/错误凭据·连接串特征）
+#   Cheat #6 Excessive Perms     → B2（写工具占比 > 30% 判 FAIL）
+#   Cheat #7 Supply Chain        → B1（工具总数/来源名；版本 pin 不可见）
+#   Cheat #8 Msg Tamper/Replay  → F1（session 随机性两次取样）
+#   Cheat #9 Sandbox Escape      → 测不到（本地进程层，passive 无感）
+#   Cheat #10 Credential Store   → D/H（仅当错误响应露出凭据；存储方式不可见）
+# 测不到的（#9、#10 及部分语义级深度）在清单里一律标 Untested，不得报 PASS。
+
 OWASP = {
     "LLM01": "Prompt Injection",
     "LLM02": "Sensitive Information Disclosure",
     "LLM06": "Excessive Agency",
     "LLM08": "Vector and Embedding Weaknesses",
     "LLM10": "Unbounded Consumption",
+}
+
+# OWASP Agentic AI Top 10（ASI01–ASI10，2025-12 官方发布）
+# 与 Cheat Sheet 有重叠但维度不同，清单 v2 同时呈现两套映射。
+OWASP_AGENTIC = {
+    "ASI01": "Agent Goal Hijack",
+    "ASI02": "Tool Misuse & Exploitation",
+    "ASI03": "Identity & Privilege Abuse",
+    "ASI04": "Agentic Supply Chain",
+    "ASI05": "Unexpected Code Execution",
+    "ASI06": "Memory & Context Poisoning",
+    "ASI07": "Insecure Inter-Agent Communication",
+    "ASI08": "Cascading Failures",
+    "ASI09": "Human-Agent Trust Exploitation",
+    "ASI10": "Rogue Agents",
 }
 
 # 高危工具：按"能力"而非"名字"归类。名字会变，能力不会。

@@ -43,6 +43,22 @@ problem: verdicts, attribution, and honest disclosure of what cannot be tested.
 
 > The audit methodology itself is not open-sourced. Targets and tools are.
 
+### If you run agents / MCP servers and just want to check your own
+
+You probably already know there are free MCP scanners (mcp-scan, mcpaudit,
+mcpscan…). This is not another one of those. The difference, in one line:
+
+- **Passive + authorization-gated + redacted** — it only reads the protocol
+  layer, refuses to run without a declared authorization, and ships a report
+  you can hand to a boss or a client. No dynamic fuzzing that pokes your real
+  tools, no "it said clean" where it actually couldn't reach the target.
+- **Honest coverage**: mapped to the OWASP MCP Security Cheat Sheet and the
+  Agentic AI Top 10, with anything it can't test marked **Untested**, never Pass.
+
+If you just want to self-check your own servers, start with the **free
+snapshot audit** above, or grab the self-serve toolkit from the
+[landing page](https://535710934-ops.github.io/agent-audit-range/).
+
 ---
 
 ## 免费快检 · Free Snapshot Audit
