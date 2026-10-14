@@ -15,7 +15,7 @@
 | 16:12 | 仓库推 2 commit：P0 买家差异化段 + 扫描器 OWASP Cheat Sheet 映射注释（6b6a8b4）；双映射 Self-Check-Toolkit-v2 进 docs + 落地页 $19 卡改双映射（86a5d4d） | 仓库 @6b6a8b4 / @86a5d4d |
 | 20:30 | **修真实 bug**：mcp_client.py 的 initialize `Accept` 头缺 `text/event-stream`，导致严格 MCP server（exa `mcp.exa.ai`）回 406。本地宽容靶场 9/9 全绿、真 server 一碰就挂——"靶场对你友好"的活例。修复后 exa 真握手（proto 2025-06-18、exa-search-server v3.4.2、2 工具），跑完整扫描得 13 PASS/1 WARN(serverInfo 暴露 version)/1 FAIL(CORS `*` 全开) | 仓库 @3030b25 + mcp.exa.ai/mcp |
 | 21:05 | tanbro/uiautomator2-mcp-server issue #20（我方"免费审计"触达）被对方关为 `state_reason=not_planned`，0 回复=婉拒/不做，干净收口不追 | tanbro/uiautomator2-mcp-server#20 |
-| 21:43 | **DEV.to 英文痛点长文发布**：主题=修 406 真实经过 + "绿≠测到" + 被动/授权/脱敏定位，挂落地页 + Creem $19 链接，tags=mcp/ai/security/devtools/debugging | dev.to/535710934ops/my-scanner-passed-every-local-test-then-406d-on-a-real-mcp-server-that-gap-is-the-point-5971 |
+| 21:43 | **DEV.to 英文痛点长文发布**：主题=修 406 真实经过 + "绿≠测到" + 被动/授权/脱敏定位，挂落地页 + Creem $19 链接，tags=mcp/ai/security/debugging（DEV.to 上限 4 个） | dev.to/535710934ops/my-scanner-passed-every-local-test-then-406d-on-a-real-mcp-server-that-gap-is-the-point-5971 |
 
 ### 本周我改了主意（必填一句真看法）
 
